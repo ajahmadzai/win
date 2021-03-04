@@ -1,9 +1,5 @@
 
+[windows]
 
-
-[host]
-
-kali    192.168.10.1
-fedora  192.168.10.2
-
-
+ansible@WIN-7_PC
+ansible@192.168.0.200
