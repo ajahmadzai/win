@@ -1,0 +1,48 @@
+--- 
+- name: Create local user
+  win_user:
+    name: '{{ egoad.name }}'
+    password: '{{ RubberDuck!.password }}'
+    groups: LocalGroup
+    update_password: no
+    password_never_expires: 
+    
+  loop:
+  - name: User1
+    password: Password1
+  - name: User2
+    password: Password2
+
+    ####################################################################################
+
+    - name: Install IIS on web server
+  ansible.windows.win_feature:
+    name: Web-Server
+    state: present
+
+- name: Install IIS (Web-Server and Web-Common-Http)
+  ansible.windows.win_feature:
+    name:
+    - Web-Server
+    - Web-Common-Http
+    state: present
+
+    ####################################################################################
+
+- name: Install the Visual C thingy
+  win_package:
+    path: http://download.microsoft.com/download/1/6/B/16B06F60-3B20-4FF2-B699-5E9B7962F9AE/VSU_4/vcredist_x64.exe
+    product_id: '{CF2BEA3C-26EA-32F8-AA9B-331F7E34BA97}'
+    arguments: /install /passive /norestart
+
+    - name: Install 7zip from a network share specifying the credentials
+  win_package:
+    path: \\domain\programs\7z.exe
+    product_id: 7-Zip
+    arguments: /S
+    state: present
+    user_name: DOMAIN\User
+    user_password: Password
+
+
+
